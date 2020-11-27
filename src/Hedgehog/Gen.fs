@@ -563,3 +563,14 @@ module GenBuilder =
 module GenOperators =
     let (<!>) = Gen.map
     let (<*>) = Gen.apply
+
+module Lolwut =
+    let traverse (f: 'a -> Gen<'b>) (l: seq<'a>): Gen<'b seq> =
+        gen {
+            let r = ResizeArray()
+            for x in l do
+                let! z = f x
+                r.Add z
+            return (r :> seq<'b>)
+        }
+    let sequence l = traverse id l
