@@ -212,20 +212,22 @@ let shrinkTests = testList "Shrink tests" [
             failureData.Shrinks =! shrinkLimit
         | _ -> failwith "impossible"
 
+    let renderTree destination x = Shrink.createTree destination x |> Tree.map string |> Tree.renderList
+
     testCase "createTree correct for 0,0" <| fun _ ->
-        let actual = Shrink.createTree 0 0 |> Tree.map (sprintf "%A") |> Tree.render
-        let expected = "0"
+        let actual = renderTree 0 0
+        let expected = [ "0" ]
         expected =! actual
 
     testCase "createTree correct for 0,1" <| fun _ ->
-        let actual = Shrink.createTree 0 1 |> Tree.map (sprintf "%A") |> Tree.renderList
+        let actual = renderTree 0 1
         let expected =
           [ "1"
             "└-0" ]
         expected =! actual
 
     testCase "createTree correct for 0,2" <| fun _ ->
-        let actual = Shrink.createTree 0 2 |> Tree.map (sprintf "%A") |> Tree.renderList
+        let actual = renderTree 0 2
         let expected =
           [ "2"
             "├-0"
@@ -233,7 +235,7 @@ let shrinkTests = testList "Shrink tests" [
         expected =! actual
 
     testCase "createTree correct for 0,3" <| fun _ ->
-        let actual = Shrink.createTree 0 3 |> Tree.map (sprintf "%A") |> Tree.renderList
+        let actual = renderTree 0 3
         let expected =
             [ "3"
               "├-0"
@@ -242,7 +244,7 @@ let shrinkTests = testList "Shrink tests" [
         expected =! actual
 
     testCase "createTree correct for 0,4" <| fun _ ->
-        let actual = Shrink.createTree 0 4 |> Tree.map (sprintf "%A") |> Tree.renderList
+        let actual = renderTree 0 4
         let expected =
             [ "4"
               "├-0"
@@ -252,7 +254,7 @@ let shrinkTests = testList "Shrink tests" [
         expected =! actual
 
     testCase "createTree correct for 0,5" <| fun _ ->
-        let actual = Shrink.createTree 0 5 |> Tree.map (sprintf "%A") |> Tree.renderList
+        let actual = renderTree 0 5
         let expected =
             [ "5"
               "├-0"
@@ -263,7 +265,7 @@ let shrinkTests = testList "Shrink tests" [
         expected =! actual
 
     testCase "createTree correct for 0,6" <| fun _ ->
-        let actual = Shrink.createTree 0 6 |> Tree.map (sprintf "%A") |> Tree.renderList
+        let actual = renderTree 0 6
         let expected =
             [ "6"
               "├-0"
@@ -275,7 +277,7 @@ let shrinkTests = testList "Shrink tests" [
         expected =! actual
 
     testCase "createTree correct for 0,7" <| fun _ ->
-        let actual = Shrink.createTree 0 7 |> Tree.map (sprintf "%A") |> Tree.renderList
+        let actual = renderTree 0 7
         let expected =
             [ "7"
               "├-0"
@@ -288,7 +290,7 @@ let shrinkTests = testList "Shrink tests" [
         expected =! actual
 
     testCase "createTree correct for 4,5" <| fun _ ->
-        let actual = Shrink.createTree 4 5 |> Tree.map (sprintf "%A") |> Tree.renderList
+        let actual = renderTree 4 5
         let expected =
             [ "5"
               "└-4" ]
