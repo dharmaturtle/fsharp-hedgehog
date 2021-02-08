@@ -212,72 +212,83 @@ let shrinkTests = testList "Shrink tests" [
             failureData.Shrinks =! shrinkLimit
         | _ -> failwith "impossible"
 
-    let renderTree destination x = Shrink.createTree destination x |> Tree.map string |> Tree.renderList
+    let testCreateTree expected destination x =
+        let actual = Shrink.createTree destination x |> Tree.map string |> Tree.renderList
+        expected =! actual
 
     testCase "createTree correct for 0,0" <| fun _ ->
-        [ "0" ] =!
-        renderTree 0 0
+        testCreateTree
+            [ "0" ]
+            0 0
 
     testCase "createTree correct for 0,1" <| fun _ ->
-        [ "1"
-          "└-0" ] =!
-        renderTree 0 1
+        testCreateTree
+            [ "1"
+              "└-0" ]
+            0 1
 
     testCase "createTree correct for 0,2" <| fun _ ->
-        [ "2"
-          "├-0"
-          "└-1" ] =!
-        renderTree 0 2
+        testCreateTree
+            [ "2"
+              "├-0"
+              "└-1" ]
+            0 2
 
     testCase "createTree correct for 0,3" <| fun _ ->
-        [ "3"
-          "├-0"
-          "└-2"
-          "  └-1" ] =!
-        renderTree 0 3
+        testCreateTree
+            [ "3"
+              "├-0"
+              "└-2"
+              "  └-1" ]
+            0 3
 
     testCase "createTree correct for 0,4" <| fun _ ->
-        [ "4"
-          "├-0"
-          "├-2"
-          "| └-1"
-          "└-3" ] =!
-        renderTree 0 4
+        testCreateTree
+            [ "4"
+              "├-0"
+              "├-2"
+              "| └-1"
+              "└-3" ]
+            0 4
 
     testCase "createTree correct for 0,5" <| fun _ ->
-        [ "5"
-          "├-0"
-          "├-3"
-          "| └-2"
-          "|   └-1"
-          "└-4" ] =!
-        renderTree 0 5
+        testCreateTree
+            [ "5"
+              "├-0"
+              "├-3"
+              "| └-2"
+              "|   └-1"
+              "└-4" ]
+            0 5
 
     testCase "createTree correct for 0,6" <| fun _ ->
-        [ "6"
-          "├-0"
-          "├-3"
-          "| └-2"
-          "|   └-1"
-          "└-5"
-          "  └-4" ] =!
-          renderTree 0 6
+        testCreateTree
+            [ "6"
+              "├-0"
+              "├-3"
+              "| └-2"
+              "|   └-1"
+              "└-5"
+              "  └-4" ]
+            0 6
 
     testCase "createTree correct for 0,7" <| fun _ ->
-        [ "7"
-          "├-0"
-          "├-4"
-          "| ├-2"
-          "| | └-1"
-          "| └-3"
-          "└-6"
-          "  └-5" ] =!
-          renderTree 0 7
+        testCreateTree
+            [ "7"
+              "├-0"
+              "├-4"
+              "| ├-2"
+              "| | └-1"
+              "| └-3"
+              "└-6"
+              "  └-5" ]
+            0 7
 
     testCase "createTree correct for 4,5" <| fun _ ->
-        [ "5"
-          "└-4" ] =!
-        renderTree 4 5
+        testCreateTree
+            [ "5"
+              "└-4" ]
+            4 5
 
     testCase "createTree 0,n creates a tree containing each value in [0,n] exactly once" <| fun _ ->
         for n in [0..100] do
